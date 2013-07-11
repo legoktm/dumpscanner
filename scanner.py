@@ -459,7 +459,7 @@ Consider installing the python-celementtree package.'''
 ##stuff starts here.
 import datetime
 import requests
-
+logfile = os.path.expanduser('~/scanner.log')
 
 def get_dblist(name):
     r = requests.get('https://noc.wikimedia.org/conf/{0}.dblist'.format(name))
