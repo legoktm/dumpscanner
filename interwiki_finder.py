@@ -43,7 +43,7 @@ class Holder:
             self.dbname = kw['dbname']
             print 'Starting ' + self.dbname
             self.site = pywikibot.site.APISite.fromDBName(self.dbname)
-        languages = self.site.family.obsolete + self.site.family.langs.keys()
+        languages = self.site.family.obsolete.keys() + self.site.family.langs.keys()
         for lang, title in interwikiR.findall(kw['text']):
             lang = lang.lower()
             if lang in languages:
