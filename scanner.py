@@ -466,7 +466,7 @@ def get_dblist(name):
     return r.text.splitlines()
 
 
-def get_path(dbname):
+def get_path(wikiname):
     #path = '/mnt/user-store/dumps/{0}-latest-pages-articles.xml'.format(wikiname)
     path = '/public/datasets/public/{0}/'.format(wikiname)
     dates = [int(x) for x in os.listdir(path)]
