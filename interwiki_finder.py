@@ -54,5 +54,9 @@ class Holder:
 if __name__ == '__main__':
     wp = scanner.get_dblist('wikipedia')
     voy = scanner.get_dblist('wikivoyage')
+    wikis = wp + voy
+    for db in scanner.get_dblist('closed'):
+        if db in wikis:
+            wikis.remove(db)
     h = Holder()
     scanner.run(wp+voy, h.function)
