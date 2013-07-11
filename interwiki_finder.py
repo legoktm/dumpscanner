@@ -56,7 +56,7 @@ class Holder:
             return
         self.counter += 1
         self.link_counter += c
-        print ' : '.join([self.counter, self.link_counter])
+        print ' : '.join([str(self.counter), str(self.link_counter)])
         msg = ': '.join([self.dbname, str(kw['page'].ns), kw['page'].title, str(c)])
         kw['logger'](msg, lf=logfile)
 
