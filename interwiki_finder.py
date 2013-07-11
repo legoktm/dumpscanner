@@ -21,15 +21,26 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 """
 
+import pywikibot
 import os
+import re
 import scanner
-logfile = os.path.expanduser('~/stuff.log')
+
+logfile = os.path.expanduser('~/public_html/iw_scanner.log')
+
+interwikiR = re.compile(r'\[\[([a-zA-Z\-]+)\s?:([^\[\]\n]*)\]\]')
+tags = ['comments', 'nowiki', 'pre', 'source']
 
 
-def test(**kw):
-    if 'KEYWORD' in kw['page'].text:
-        kw['logger'](kw['dbname'] + ': ' + kw['page'].title, lf=logfile)
+def function(**kw):
+    site = pywikibot.site.APISite.fromDBName(kw['dbname'])
+    languages = site.family.obsolete + site.family.langs.keys()
+    for lang, title in interwikiR.findall(kw['text']):
+        lang = lang.lower()
+        if lang in languages:
+            kw['logger'](kw['dbname'] + ': ' + kw['page'].title, lf=logfile)
 
 if __name__ == '__main__':
-    dblist = scanner.get_dblist('wikipedia')  # Iterate over every Wikipedia
-    scanner.run(dblist, test)
+    wp = scanner.get_dblist('wikipedia')
+    voy = scanner.get_dblist('wikivoyage')
+    scanner.run(wp+voy, function)
