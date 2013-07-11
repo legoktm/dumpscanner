@@ -32,15 +32,27 @@ interwikiR = re.compile(r'\[\[([a-zA-Z\-]+)\s?:([^\[\]\n]*)\]\]')
 tags = ['comments', 'nowiki', 'pre', 'source']
 
 
-def function(**kw):
-    site = pywikibot.site.APISite.fromDBName(kw['dbname'])
-    languages = site.family.obsolete + site.family.langs.keys()
-    for lang, title in interwikiR.findall(kw['text']):
-        lang = lang.lower()
-        if lang in languages:
-            kw['logger'](kw['dbname'] + ': ' + kw['page'].title, lf=logfile)
+class Holder:
+    def __init__(self):
+        self.counter = 0
+        self.site = None
+        self.dbname = ''
+
+    def function(self, **kw):
+        if kw['dbname'] != self.dbname:
+            self.dbname = kw['dbname']
+            print 'Starting ' + self.dbname
+            self.site = pywikibot.site.APISite.fromDBName(self.dbname)
+        languages = self.site.family.obsolete + self.site.family.langs.keys()
+        for lang, title in interwikiR.findall(kw['text']):
+            lang = lang.lower()
+            if lang in languages:
+                self.counter += 1
+                print self.counter
+                kw['logger'](self.dbname + ': ' + str(kw['page'].ns) + ': ' + kw['page'].title, lf=logfile)
 
 if __name__ == '__main__':
     wp = scanner.get_dblist('wikipedia')
     voy = scanner.get_dblist('wikivoyage')
-    scanner.run(wp+voy, function)
+    h = Holder()
+    scanner.run(wp+voy, h.function)
