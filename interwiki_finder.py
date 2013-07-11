@@ -35,6 +35,7 @@ tags = ['comments', 'nowiki', 'pre', 'source']
 class Holder:
     def __init__(self):
         self.counter = 0
+        self.link_counter = 0
         self.site = None
         self.dbname = ''
 
@@ -54,7 +55,8 @@ class Holder:
         if not match:
             return
         self.counter += 1
-        print self.counter
+        self.link_counter += c
+        print ' : '.join([self.counter, self.link_counter])
         msg = ': '.join([self.dbname, str(kw['page'].ns), kw['page'].title, str(c)])
         kw['logger'](msg, lf=logfile)
 
