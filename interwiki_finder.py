@@ -44,12 +44,19 @@ class Holder:
             print 'Starting ' + self.dbname
             self.site = pywikibot.site.APISite.fromDBName(self.dbname)
         languages = self.site.family.obsolete.keys() + self.site.family.langs.keys()
+        match = False
+        c = 0
         for lang, title in interwikiR.findall(kw['page'].text):
             lang = lang.lower()
             if lang in languages:
-                self.counter += 1
-                print self.counter
-                kw['logger'](self.dbname + ': ' + str(kw['page'].ns) + ': ' + kw['page'].title, lf=logfile)
+                c += 1
+                match = True
+        if not match:
+            return
+        self.counter += 1
+        print self.counter
+        msg = ': '.join([self.dbname, str(kw['page'].ns), kw['page'].title, str(c)])
+        kw['logger'](msg, lf=logfile)
 
 if __name__ == '__main__':
     wp = scanner.get_dblist('wikipedia')
