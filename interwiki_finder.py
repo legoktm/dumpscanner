@@ -59,4 +59,4 @@ if __name__ == '__main__':
         if db in wikis:
             wikis.remove(db)
     h = Holder()
-    scanner.run(wp+voy, h.function)
+    scanner.run(wikis, h.function)
