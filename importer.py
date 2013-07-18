@@ -27,7 +27,8 @@ import oursql
 
 #2013-07-11 09:58:37.744094: u'abwiki: 10: \u0410\u0448\u0430\u0431\u043b\u043e\u043d:See also: 1'
 
-filename = '/data/project/addshore-dev/public_html/iw_scanner.log'
+filename = '/data/project/addbot/iw_scanner.log'
+
 
 def gen():
     with open(filename, 'r') as f:
@@ -57,9 +58,12 @@ def parse_line(line):
         lang = db.name.replace('wikivoyage', '')
         site = 'wikivoyage'
     namespace = int(sp[1])
-    title = sp[2].split(':', 1)[1]
+    if ':' in sp[2]:
+        title = sp[2].split(':', 1)[1]
+    else:
+        title = sp[2]
     links = int(sp[3])
-    yield tuple([site, lang, namespace, title, links, None, None])
+    return site, lang, namespace, title, links, None, None
 
 if __name__ == '__main__':
     main()
